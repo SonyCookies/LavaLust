@@ -1,5 +1,5 @@
 <?php
-defined('PREVENT_DIRECT_ACCESS') OR exit('No direct script access allowed');
+defined('PREVENT_DIRECT_ACCESS') or exit('No direct script access allowed');
 /**
  * ------------------------------------------------------------------
  * LavaLust - an opensource lightweight PHP MVC Framework
@@ -79,7 +79,7 @@ $config['ENVIRONMENT']             = 'development';
 | WARNING: You MUST set this value!
 |
 */
-$config['base_url'] 				= '';
+$config['base_url']         = 'http://localhost:3000';
 
 /*
 |--------------------------------------------------------------------------
@@ -90,7 +90,7 @@ $config['base_url'] 				= '';
 | variable to blank.
 |
 */
-$config['index_page']               = 'index.php';
+$config['index_page']               = '';
 
 /*
 |--------------------------------------------------------------------------
@@ -150,7 +150,7 @@ $config['composer_autoload']        = FALSE;
 | DO NOT CHANGE THIS UNLESS YOU FULLY UNDERSTAND THE REPERCUSSIONS!!
 |
 */
-$config['permitted_uri_chars']		= 'a-z 0-9~%.:_\-';
+$config['permitted_uri_chars']    = 'a-z 0-9~%.:_\-';
 
 /*
 |--------------------------------------------------------------------------
@@ -160,7 +160,7 @@ $config['permitted_uri_chars']		= 'a-z 0-9~%.:_\-';
 | This config will be use html_escape function
 |
 */
-$config['charset']					= 'UTF-8';
+$config['charset']          = 'UTF-8';
 
 /*
 |--------------------------------------------------------------------------
@@ -170,7 +170,7 @@ $config['charset']					= 'UTF-8';
 | app/views/errors/ directory.  Use a full server path with trailing slash.
 |
 */
-$config['error_view_path']         	= '';
+$config['error_view_path']           = '';
 
 /*
 |--------------------------------------------------------------------------
@@ -184,7 +184,7 @@ $config['error_view_path']         	= '';
 |	if you have 'default folder' and '404.php file' inside error folder in view
 |
 */
-$config['404_override']       	    = '';
+$config['404_override']             = '';
 
 /*
 |--------------------------------------------------------------------------
@@ -196,7 +196,7 @@ $config['404_override']       	    = '';
 | than en-US.
 |
 */
-$config['language'] 				= 'en-US';
+$config['language']         = 'en-US';
 
 /*
 |--------------------------------------------------------------------------
@@ -231,6 +231,7 @@ $config['sess_expire_on_close']    = FALSE;
 $config['cookie_prefix']           = '';
 $config['cookie_domain']           = '';
 $config['cookie_path']             = '/';
+$config['sess_save_path']          = 'runtime/sess';
 $config['cookie_secure']           = FALSE;
 $config['cookie_expiration']       = 86400;
 $config['cookie_httponly']         = FALSE;
@@ -282,4 +283,3 @@ $config['csrf_token_name']         = 'csrf_test_name';
 $config['csrf_cookie_name']        = 'csrf_cookie_name';
 $config['csrf_expire']             = 7200;
 $config['csrf_regenerate']         = FALSE;
-?>

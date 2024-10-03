@@ -1,5 +1,5 @@
 <?php
-defined('PREVENT_DIRECT_ACCESS') OR exit('No direct script access allowed');
+defined('PREVENT_DIRECT_ACCESS') or exit('No direct script access allowed');
 /**
  * ------------------------------------------------------------------
  * LavaLust - an opensource lightweight PHP MVC Framework
@@ -35,11 +35,12 @@ defined('PREVENT_DIRECT_ACCESS') OR exit('No direct script access allowed');
  */
 
 /**
-* ------------------------------------------------------
-*  Class Email
-* ------------------------------------------------------
+ * ------------------------------------------------------
+ *  Class Email
+ * ------------------------------------------------------
  */
-class Email {
+class Email
+{
 	/**
 	 * Sender Email
 	 *
@@ -101,9 +102,7 @@ class Email {
 	/**
 	 * Class constructor
 	 */
-	public function __construct() {
-
-	}
+	public function __construct() {}
 	/**
 	 * Check if email is in correct format
 	 * 
@@ -112,9 +111,8 @@ class Email {
 	 */
 	public function valid_email($email)
 	{
-		$email = filter_var($email,FILTER_SANITIZE_EMAIL);
-		if(filter_var($email, FILTER_VALIDATE_EMAIL))
-		{
+		$email = filter_var($email, FILTER_SANITIZE_EMAIL);
+		if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
 			return true;
 		} else {
 			throw new Exception('Invalid email address');
@@ -134,12 +132,10 @@ class Email {
 	 */
 	public function sender($sender_email, $display_name = '')
 	{
-		if( ! empty($sender_email) && $this->valid_email($sender_email) )
-		{
+		if (! empty($sender_email) && $this->valid_email($sender_email)) {
 			$this->sender = $sender_email;
-			
-			if(! is_null($display_name))
-			{
+
+			if (! is_null($display_name)) {
 				$this->sender_name = $this->filter_string($display_name);
 			}
 			return $this->sender;
@@ -154,10 +150,8 @@ class Email {
 	 */
 	public function recipient($recipient)
 	{
-		if( ! empty($recipient) && $this->valid_email($recipient) )
-		{
-			if( ! in_array($recipient, $this->recipients) )
-			{
+		if (! empty($recipient) && $this->valid_email($recipient)) {
+			if (! in_array($recipient, $this->recipients)) {
 				$this->recipients[] = $recipient;
 			}
 		}
@@ -171,8 +165,7 @@ class Email {
 	 */
 	public function reply_to($reply_to)
 	{
-		if($this->valid_email($reply_to))
-		{
+		if ($this->valid_email($reply_to)) {
 			$this->reply_to = $reply_to;
 			return $this->reply_to;
 		}
@@ -186,12 +179,11 @@ class Email {
 	 */
 	public function subject($subject)
 	{
-		if( ! empty($subject) )
-		{
+		if (! empty($subject)) {
 			$this->subject = $this->filter_string($subject);
 			return $this->subject;
 		} else {
-			throw new Exception("Email subject is empty");	
+			throw new Exception("Email subject is empty");
 		}
 	}
 
@@ -203,8 +195,8 @@ class Email {
 	public function email_content($emailContent, $type = 'plain')
 	{
 		$emailContent = wordwrap($emailContent, 70, "\n");
-        $this->emailContent = $emailContent;
-        $this->emailType = $type;
+		$this->emailContent = $emailContent;
+		$this->emailType = $type;
 	}
 
 	/**
@@ -215,15 +207,12 @@ class Email {
 	 */
 	public function attachment($attach_file)
 	{
-		if( ! empty($attach_file) )
-		{
-			if( ! in_array($attach_file, $this->attach_files) )
-			{
+		if (! empty($attach_file)) {
+			if (! in_array($attach_file, $this->attach_files)) {
 				$this->attach_files[] = $attach_file;
 			}
-
 		} else {
-			throw new Exception("No file attachment was specified");	
+			throw new Exception("No file attachment was specified");
 		}
 	}
 
@@ -234,88 +223,84 @@ class Email {
 	 * @return File
 	 */
 	public function recreate_attachment($attachment)
-    {
-        if(file_exists($attachment) === true)
-        {
+	{
+		if (file_exists($attachment) === true) {
 			$fileType = mime_content_type($attachment);
 			$file_size = filesize($attachment);
 			$handle = fopen($attachment, 'rb');
 			$content = fread($handle, $file_size);
 			$content = chunk_split(base64_encode($content));
 			fclose($handle);
-            $out = "\r\n";
-            $contents = 'Content-Type: '.$fileType.'; name='.basename($attachment).$out;
-            $contents .= 'Content-Transfer-Encoding: base64'.$out;
-            $contents .= 'Content-ID: <'.basename($attachment).'>'.$out;
-            $contents .= $out.$content.$out.$out;
-            return $contents;
-        }
+			$out = "\r\n";
+			$contents = 'Content-Type: ' . $fileType . '; name=' . basename($attachment) . $out;
+			$contents .= 'Content-Transfer-Encoding: base64' . $out;
+			$contents .= 'Content-ID: <' . basename($attachment) . '>' . $out;
+			$contents .= $out . $content . $out . $out;
+			return $contents;
+		}
 
-        return false;
-    }
+		return false;
+	}
 
-    /**
-     * Send Email
-     * 
-     * @return function Email Sending
-     */
+	/**
+	 * Send Email
+	 * 
+	 * @return function Email Sending
+	 */
 	public function send()
 	{
-		if(( ! is_array($this->recipients) ) || (count($this->recipients) < 1)) {
-            return false;
-        }
+		if ((! is_array($this->recipients)) || (count($this->recipients) < 1)) {
+			return false;
+		}
 
-        if($this->emailType == 'plain')
-        	$contype = 'Content-Type: text/plain; charset=ISO-8859-1';
-        else
-        	$contype = 'Content-Type: text/html; charset='.config_item('charset');
+		if ($this->emailType == 'plain')
+			$contype = 'Content-Type: text/plain; charset=ISO-8859-1';
+		else
+			$contype = 'Content-Type: text/html; charset=' . config_item('charset');
 
-        $bm = md5(uniqid(time()).'msg');
-        $bc = md5(uniqid(time()).'cont');
+		$bm = md5(uniqid(time()) . 'msg');
+		$bc = md5(uniqid(time()) . 'cont');
 
-        $out = "\r\n";
-        $headers = array();
-        $headers[] = 'MIME-Version: 1.0';
-        $headers[] = 'X-Mailer: PHP/'.phpversion();
-        $headers[] = 'Content-Type: multipart/related;boundary='.$bm;
-        $headers[] = 'Content-Transfer-Encoding: base64';
-        $headers[] = 'From: '.$this->sender_name.' <'.$this->sender.'>';
-		$headers[] = 'Return-Path: '.$this->sender_name.' <'.$this->sender.'>';
-      	$headers[] = 'X-Priority: 3';
+		$out = "\r\n";
+		$headers = array();
+		$headers[] = 'MIME-Version: 1.0';
+		$headers[] = 'X-Mailer: PHP/' . phpversion();
+		$headers[] = 'Content-Type: multipart/related;boundary=' . $bm;
+		$headers[] = 'Content-Transfer-Encoding: base64';
+		$headers[] = 'From: ' . $this->sender_name . ' <' . $this->sender . '>';
+		$headers[] = 'Return-Path: ' . $this->sender_name . ' <' . $this->sender . '>';
+		$headers[] = 'X-Priority: 3';
 
-        if($this->reply_to !== '') {
-            $headers[] = 'Reply-To: '.$this->reply_to;
-        } else {
-            $headers[] = 'Reply-To: '.$this->sender;
-        }
+		if ($this->reply_to !== '') {
+			$headers[] = 'Reply-To: ' . $this->reply_to;
+		} else {
+			$headers[] = 'Reply-To: ' . $this->sender;
+		}
 
-      	$contents = $out.'--'.$bm.$out;
-        $contents .= 'Content-Type: multipart/alternative; boundary='.$bc.$out;
+		$contents = $out . '--' . $bm . $out;
+		$contents .= 'Content-Type: multipart/alternative; boundary=' . $bc . $out;
 
-        if($this->emailContent !== '') {
-            $contents .= $out.'--'.$bc.$out;
-            $contents .= $contype.$out;
-            $contents .= $out.$this->emailContent.$out;
-        }
+		if ($this->emailContent !== '') {
+			$contents .= $out . '--' . $bc . $out;
+			$contents .= $contype . $out;
+			$contents .= $out . $this->emailContent . $out;
+		}
 
-        $contents .= $out.'--'.$bc.'--'.$out;
+		$contents .= $out . '--' . $bc . '--' . $out;
 
-        foreach($this->attach_files as $attach_file) {
-            $attachmentContent = $this->recreate_attachment($attach_file);
+		foreach ($this->attach_files as $attach_file) {
+			$attachmentContent = $this->recreate_attachment($attach_file);
 
-            if($attachmentContent !== false) {
-                $contents .= $out.'--'.$bm.$out;
-                $contents .= $attachmentContent;
-            }
-        }
+			if ($attachmentContent !== false) {
+				$contents .= $out . '--' . $bm . $out;
+				$contents .= $attachmentContent;
+			}
+		}
 
-        $contents .= $out.'--'.$bm.'--'.$out;
+		$contents .= $out . '--' . $bm . '--' . $out;
 
 		$recipients = implode(',', $this->recipients);
 
-        return mail($recipients, $this->subject, $contents, implode($out, $headers), '-f'.$this->sender);
+		return mail($recipients, $this->subject, $contents, implode($out, $headers), '-f' . $this->sender);
 	}
-
 }
-
-?>

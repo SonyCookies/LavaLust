@@ -6,9 +6,9 @@ defined('PREVENT_DIRECT_ACCESS') OR exit('No direct script access allowed');
  * ------------------------------------------------------------------
  *
  * MIT License
- *
+ * 
  * Copyright (c) 2020 Ronald M. Marasigan
- *
+ * 
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
  * in the Software without restriction, including without limitation the rights
@@ -29,16 +29,12 @@ defined('PREVENT_DIRECT_ACCESS') OR exit('No direct script access allowed');
  *
  * @package LavaLust
  * @author Ronald M. Marasigan <ronald.marasigan@yahoo.com>
+ * @copyright Copyright 2020 (https://ronmarasigan.github.io)
  * @since Version 1
- * @link https://github.com/ronmarasigan/LavaLust
+ * @link https://lavalust.pinoywap.org
  * @license https://opensource.org/licenses/MIT MIT License
  */
 
- /**
-* ------------------------------------------------------
-*  Class Upload
-* ------------------------------------------------------
- */
 class Upload
 {
 	/**
@@ -54,7 +50,7 @@ class Upload
 	 * @var array
 	 */
 	public $file = array();
-
+	
 	/**
 	 * File extension
 	 *
@@ -82,7 +78,7 @@ class Upload
 	 * @var array
 	 */
 	private $default_allowed_mimes = array('image/gif', 'image/jpg', 'image/jpeg', 'image/png');
-
+	
 	/**
 	 * List of allowed file extensions
 	 *
@@ -110,7 +106,7 @@ class Upload
 	 * @var int
 	 */
 	private $max_size;
-
+	
 	/**
 	 * Min file size (MB)
 	 *
@@ -124,7 +120,7 @@ class Upload
 	 * @var array
 	 */
 	private $upload_errors = array();
-
+	
 	/**
 	 * Filename
 	 *
@@ -323,7 +319,7 @@ class Upload
 			array_push($this->upload_errors, 'Directory is not usable.');
 		}
 
-		// Create a unique name if we don't want files overwritten
+		// Create a unique name if we don't want files overwritten	
 		if($overwrite)
 		{
 			$this->filename = $no_extension ? $filename : $filename.'.'.$this->extension;
@@ -340,7 +336,7 @@ class Upload
 				$this->filename = $this->unique_filename($this->dir, $filename, $no_extension ? NULL : $this->extension);
 			}
 		}
-
+		
 		if(empty($this->upload_errors))
 		{
 			// Move the file to the correct location
@@ -350,7 +346,7 @@ class Upload
 		{
 			return FALSE;
 		}
-
+		
 	}
 
 

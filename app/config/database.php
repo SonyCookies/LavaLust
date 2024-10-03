@@ -1,5 +1,5 @@
 <?php
-defined('PREVENT_DIRECT_ACCESS') OR exit('No direct script access allowed');
+defined('PREVENT_DIRECT_ACCESS') or exit('No direct script access allowed');
 /**
  * ------------------------------------------------------------------
  * LavaLust - an opensource lightweight PHP MVC Framework
@@ -58,14 +58,12 @@ defined('PREVENT_DIRECT_ACCESS') OR exit('No direct script access allowed');
 */
 
 $database['main'] = array(
-    'driver'	=> '',
-    'hostname'	=> '',
-    'port'		=> '',
-    'username'	=> '',
-    'password'	=> '',
-    'database'	=> '',
-    'charset'	=> '',
-    'dbprefix'	=> '',
+    'driver'    => 'mysql',
+    'hostname'    => 'localhost',
+    'port'        => '3306',
+    'username'    => 'root',
+    'password'    => '',
+    'database'    => 'lavalust2',
+    'charset'    => 'utf8mb4',
+    'dbprefix'    => '',
 );
-
-?>
