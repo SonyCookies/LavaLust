@@ -6,11 +6,6 @@ class User extends Controller
   public function __construct()
   {
     parent::__construct();
-    $this->call->helper('url');
-    $this->call->library('session');
-    $this->call->library('email');
-    $this->call->library('form_validation');
-    $this->call->model('User_model');
     $this->call->database();
   }
 
@@ -49,7 +44,10 @@ class User extends Controller
         die('TODO | Email already exists.');
         $this->call->view('register', ['error_message' => 'Email already registered']);
       } else {
-        $verificationCode = substr(md5(rand()), 0, 6);
+        $verificationCode = '';
+        for ($i = 0; $i < 6; $i++) {
+          $verificationCode .= rand(0, 9);
+        }
         $hashedPassword = password_hash($this->io->post('password'), PASSWORD_BCRYPT);
         $is_verified = 0;
         $email = $this->io->post('email');
@@ -69,8 +67,6 @@ class User extends Controller
         $this->session->set_userdata('registered_email', $email);
 
         $subject = "Account Verification";
-        // $content = "Hello,<br><br>This is a LAVLAUST4 email.<br>Proceed to this <a href='" . site_url("pendingVerification") . "/" . $user['id'] . "'>Link</a> to verify your account.<br><br>Best regards,<br>Your Name";
-
         $content = '
         <!DOCTYPE html>
         <html lang="en">
@@ -197,7 +193,6 @@ class User extends Controller
 
   public function authenticate()
   {
-    // Get email and password from form input
     $email = $this->io->post('email');
     $password = $this->io->post('password');
 
@@ -206,7 +201,10 @@ class User extends Controller
     if ($user) {
       if ($user['is_verified'] == 0 || $user['verification_code'] != null) {
 
-        $verificationCode = substr(md5(rand()), 0, 6);
+        $verificationCode = '';
+        for ($i = 0; $i < 6; $i++) {
+          $verificationCode .= rand(0, 9);
+        }
         $this->User_model->update_verification_code_by_email($email, $verificationCode);
         $data['email'] = $email;
 
@@ -307,8 +305,6 @@ class User extends Controller
           $this->session->set_userdata('email', $user['email']);
           $this->session->set_userdata('name', $user['name']);
 
-
-
           header('Location: /');
           exit;
         } else {
@@ -321,12 +317,9 @@ class User extends Controller
       $this->call->view('login', ['error_message' => 'No account found with that email.']);
     }
   }
-
   public function logout()
   {
     $this->session->sess_destroy();
     redirect('/login');
   }
-
-
 }
